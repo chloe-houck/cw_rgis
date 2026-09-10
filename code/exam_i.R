@@ -106,5 +106,5 @@ g_bplot1 <- ggplot(PlantGrowth) +
 # Assign to: `g_bplot2`
 # Create a boxplot of `weight` by `group`, then overlay points showing individual observations.
 g_bplot2 <- ggplot(PlantGrowth) +
-  geom_boxplot(mapping = aes(x = weight, y = group)) +
-  geom_point(mapping = aes(x = weight, y = group, color = group))
+  geom_boxplot(mapping = aes(x = weight, y = group, fill = group)) +
+  geom_point(mapping = aes(x = weight, y = group))
