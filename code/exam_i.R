@@ -70,30 +70,41 @@ mtcars_mpg_by_gear <- group_by(df_mtcars, gear) %>%
 # Visualization in R (using `iris` dataset)
 
 ## before you begin with the following questions, type the following code to check column names in the dataframe
-colnames(iris) # output from this code is the column names that can be used in figures
+Iris_Column_Names <- colnames(iris) # output from this code is the column names that can be used in figures
 
 # 11. Simple scatter plot of `Sepal.Length` vs `Sepal.Width` using `ggplot()`
 # Assign to: `g_scat`
 # Create a scatter plot with `Sepal.Width` on the x-axis and `Sepal.Length` on the y-axis.
+g_scat <- ggplot(iris) +
+  geom_point(mapping = aes(x = Sepal.Width, y = Sepal.Length))
 
 # 12. Scatter plot with points colored by `Species`
 # Assign to: `g_scat_col`
 # Create a scatter plot with `Petal.Width` on the x-axis and `Petal.Length` on the y-axis,
 # coloring points by `Species`.
+g_scat_col <- ggplot(iris) +
+  geom_point(mapping = aes(x = Sepal.Width, y = Sepal.Length, color = Species))
 
 # 13. Histogram of `Petal.Width` with `binwidth = 0.5`
 # Assign to: `g_hist`
 # Create a histogram of `Petal.Width` with `binwidth` set to 0.5.
+g_hist <- ggplot(iris) +
+  geom_histogram(mapping = aes(x = Petal.Width), binwidth = 0.5)
 
 # Visualization in R (using `PlantGrowth` dataset)
 
 ## before you begin with the following questions, type the following code to check column names in the dataframe
-colnames(PlantGrowth) # output from this code is the column names that can be used in figures
+Plant_Column_Names <- colnames(PlantGrowth) # output from this code is the column names that can be used in figures
 
 # 14. Boxplot of `weight` grouped and filled by `group`
 # Assign to: `g_bplot1`
 # Create a boxplot of `weight` by `group`, filling boxes by `group`.
+g_bplot1 <- ggplot(PlantGrowth) +
+  geom_boxplot(mapping = aes(x = weight, y = group, fill = group))
 
 # 15. Boxplot + scatter plot of `weight` by `group`
 # Assign to: `g_bplot2`
 # Create a boxplot of `weight` by `group`, then overlay points showing individual observations.
+g_bplot2 <- ggplot(PlantGrowth) +
+  geom_boxplot(mapping = aes(x = weight, y = group)) +
+  geom_point(mapping = aes(x = weight, y = group, color = group))
