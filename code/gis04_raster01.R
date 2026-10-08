@@ -5,3 +5,10 @@ pacman::p_load(tidyverse,
                tidyterra,
                mapview,
                stars)
+
+# Raster Data Format ------------------------------------------------------
+
+spr_ex <- rast("data/spr_example.tif")
+writeRaster(x = spr_ex, filename = "data/spr_elev.tif", overwrite = TRUE)
+ggplot() +
+  geom
