@@ -76,7 +76,8 @@ sf_four_l <- sf_site_four %>%
 #   0 = other
 # 
 # Load this raster as `spr_land` and display the unique land-cover codes it contains.
-
+spr_land <- rast("data/spr_land_reclass.tif")
+unique(spr_land)
 
 # Q7. 
 # Reclassify the raster `spr_land` to create a new raster object `spr_crop` 
@@ -86,25 +87,30 @@ sf_four_l <- sf_site_four %>%
 #   1010 = 1 (crop)
 #   1100 = 0 (urban)
 #   0 = 0 (other)
-
+cm <- cbind(c(0, 1001, 1010, 1100), c(0, 0, 1, 0))
+spr_crop <- classify(spr_land, rcl = cm)
+unique(spr_crop)
 
 # Q8. 
 # Crop the cropland raster (`spr_crop`) to the extent of the four selected counties 
 # (`sf_four`; "guilford", "randolph", "davidson", and "forsyth")
 # Save the resulting cropped raster as `spr_crop_four`.
-
+spr_crop_four <- crop(x = spr_crop, y = sf_four)
 
 # Q9. 
 # Create a map showing the cropped cropland raster (`spr_crop_four`) 
 #   overlaid with the four counties (`sf_four`). 
 # Use a semi-transparent overlay for the counties.
-
+ggplot() +
+  geom_spatraster(data = spr_crop_four) +
+  geom_sf(data = sf_four, alpha = 0.25)
 
 # Q10. Calculate the proportion of cropland pixels within the four counties 
 #   from the cropped raster (`spr_crop_four`). 
 # Since cropland pixels are coded as 1 and others as 0, the mean gives the proportion.
-#
-# ENTER YOUR ANSWER HERE:
+m_spr_crop_four <- values(spr_crop_four) %>% 
+  mean()*100
+# ENTER YOUR ANSWER HERE: 7.654%
 # (round your answer to third decimal places, e.g., 0.021)
 
 
