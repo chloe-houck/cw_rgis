@@ -57,10 +57,10 @@ ggplot() +
 #   with the appropriate CRS, UTM Zone 17N (EPSG: 32617)
 #   so that distances are measured in meters.
 # Then, find the maximum distance among all site pairs.
-sf_four_proj <- st_transform(sf_site_four, crs = 32617)
-sf_four_distance <- st_length(sf_four_proj)
+sf_four_proj <- st_transform(sf_site_four, crs = 32617) %>% 
+  st_length()
 sf_four_l <- sf_site_four %>% 
-  mutate(length = sf_four_distance)
+  mutate(length = sf_four_proj)
 # ENTER YOUR ANSWER HERE:
 
 
@@ -132,8 +132,10 @@ spr_tmp_filter <- filter(spr_tmp_extract, temperature > 16)
 # Q12. Create 3-km buffers around each site in `sf_site_four` (see Q3). 
 # Be sure to first transform the coordinate reference system to UTM Zone 17N (EPSG: 32617) 
 # so that the buffer distance is measured in meters.
-sf_buff_proj <- st_transform(sf_site_four, crs = 32617) %>% 
-  st_buffer(dist = 3)
+sf_site_proj <- sf_site_four %>%
+  st_transform(crs = 32617)
+sf_site_buff_proj <- sf_site_proj %>%
+  st_buffer(dist = 3) # unit is meter in a projected CRS
 
 # Q13. Project the cropped cropland raster (`spr_crop_four`) 
 # to the same UTM coordinate reference system (EPSG: 32617).
@@ -146,8 +148,9 @@ spr_crop_proj <- extract(x = spr_crop_four, y = sf_site_four, bind = TRUE)%>%
 # Q14. Create a map displaying the projected cropland raster (`spr_crop_proj`) 
 # with 3-km site buffers (`sf_buff_proj`) overlaid.
 ggplot() +
-  geom_sf(data = spr_crop_proj) +
-  geom_sf(data = sf_buff_proj)
+  geom_sf(data = spr_crop_proj, fill = "gray") +
+  geom_sf(data = sf_site_buff_proj, fill = "blue")
+  geom_sf(data = sf_site_four, fill = "darkgreen")
 
 # Q15. Calculate the proportion of cropland within each 3-km site buffer. 
 # Store the result as `df_crop_frac`, and identify the `site_id` 
