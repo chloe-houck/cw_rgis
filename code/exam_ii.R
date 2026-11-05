@@ -29,32 +29,38 @@ sf_nc_county <- readRDS("data/sf_nc_county.rds")
 # `df_site` currently has no coordinate reference system (CRS). 
 # Convert it to an `sf` object and assign the WGS 84 CRS (EPSG: 4326). 
 # Save the resulting object as `sf_site`.
-
+sf_site <- df_site %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326)
 
 # Q2.
 # From `sf_nc_county`, select only the county polygons of the following counties: 
 #   "guilford", "randolph", "davidson", and "forsyth". 
 # Save the result as `sf_four`.
-
+sf_four <- filter(sf_nc_county, when_any(county == "guilford", county == "randolph", county == "davidson", county == "forsyth"))
 
 # Q3. 
 # Perform a spatial join to identify sites in `sf_site` that fall within 
 #   the four selected counties stored in `sf_four`. 
 # Make sure that the output object is a POINT layer after spatial join.
 # Remove any rows without a `county` value and save the result as `sf_site_four`.
-
+sf_site_four <- st_join(x = sf_site, y = sf_four, left = FALSE)
 
 # Q4. 
 # Create a map showing the four selected counties (`sf_four`) 
 #   and the sampling sites (`sf_site_four`) overlaid on the same plot. 
-
+ggplot() +
+  geom_sf(data = sf_site_four) +
+  geom_sf(data = sf_four, alpha = 0.25)
 
 # Q5. 
 # Calculate the pairwise distances among all sites in `sf_site_four`
-#   with the appropriate CRS, UTM Zone 17N (EPSG: 32617) 
-#   so that distances are measured in meters. 
+#   with the appropriate CRS, UTM Zone 17N (EPSG: 32617)
+#   so that distances are measured in meters.
 # Then, find the maximum distance among all site pairs.
-# 
+sf_four_proj <- st_transform(sf_site_four, crs = 32617)
+sf_four_distance <- st_length(sf_four_proj)
+sf_four_l <- sf_site_four %>% 
+  mutate(length = sf_four_distance)
 # ENTER YOUR ANSWER HERE:
 
 
