@@ -119,27 +119,35 @@ m_spr_crop_four <- values(spr_crop_four) %>%
 # Q11.
 # The raster file "spr_tmp_nc.tif" in the "data" folder contains 
 #   annual mean temperature (°C) data for North Carolina. 
+spr_tmp <- rast("data/spr_tmp_nc.tif")
 # Load this raster and extract the temperature values 
 #   at each sampling site in `sf_site`. 
+spr_tmp_extract <- extract(x = spr_tmp, y = sf_site, bind = TRUE) %>% 
+  st_as_sf()
 # Then, identify how many sites have temperature values greater than 16°C.
-#
-# ENTER YOUR ANSWER HERE:
+spr_tmp_filter <- filter(spr_tmp_extract, temperature > 16)
+# ENTER YOUR ANSWER HERE: 24
 
 
 # Q12. Create 3-km buffers around each site in `sf_site_four` (see Q3). 
 # Be sure to first transform the coordinate reference system to UTM Zone 17N (EPSG: 32617) 
 # so that the buffer distance is measured in meters.
-
+sf_buff_proj <- st_transform(sf_site_four, crs = 32617) %>% 
+  st_buffer(dist = 3)
 
 # Q13. Project the cropped cropland raster (`spr_crop_four`) 
-# to the same UTM coordinate reference system (EPSG: 32617). 
+# to the same UTM coordinate reference system (EPSG: 32617).
 # Assign the projected raster to `spr_crop_proj`.
 # Use an appropriate re-sampling method in light of the raster data type.
-
+spr_crop_proj <- extract(x = spr_crop_four, y = sf_site_four, bind = TRUE)%>% 
+  st_as_sf() %>%
+  st_transform(crs = 32617)
 
 # Q14. Create a map displaying the projected cropland raster (`spr_crop_proj`) 
 # with 3-km site buffers (`sf_buff_proj`) overlaid.
-
+ggplot() +
+  geom_sf(data = spr_crop_proj) +
+  geom_sf(data = sf_buff_proj)
 
 # Q15. Calculate the proportion of cropland within each 3-km site buffer. 
 # Store the result as `df_crop_frac`, and identify the `site_id` 
