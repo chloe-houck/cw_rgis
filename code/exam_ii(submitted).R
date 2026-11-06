@@ -54,15 +54,17 @@ ggplot() +
 
 # Q5. 
 # Calculate the pairwise distances among all sites in `sf_site_four`
-#   with the appropriate CRS, UTM Zone 17N (EPSG: 32617)
-#   so that distances are measured in meters.
+#   with the appropriate CRS, UTM Zone 17N (EPSG: 32617) 
+#   so that distances are measured in meters. 
 # Then, find the maximum distance among all site pairs.
-sf_four_proj <- st_transform(sf_site_four, crs = 32617) %>% 
-  st_length()
-sf_four_l <- sf_site_four %>% 
-  mutate(length = sf_four_proj)
-# ENTER YOUR ANSWER HERE:
-
+# 
+# ENTER YOUR ANSWER HERE: 71724.58
+sf_four_proj <- st_transform(sf_site_four, crs = 32617)
+v_four_l <- st_length(sf_four_proj)
+st_crs(sf_site_four)
+st_crs(sf_four_proj)
+sf_four_distance <- st_distance(sf_four_proj)
+max(sf_four_distance)
 
 # raster data analysis ----------------------------------------------------
 

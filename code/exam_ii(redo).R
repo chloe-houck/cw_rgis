@@ -57,7 +57,13 @@ ggplot() +
 #   so that distances are measured in meters. 
 # Then, find the maximum distance among all site pairs.
 # 
-# ENTER YOUR ANSWER HERE:
+# ENTER YOUR ANSWER HERE: 71724.58
+sf_four_proj <- st_transform(sf_site_four, crs = 32617)
+v_four_l <- st_length(sf_four_proj)
+st_crs(sf_site_four)
+st_crs(sf_four_proj)
+sf_four_distance <- st_distance(sf_four_proj)
+max(sf_four_distance)
 
 # raster-vector interaction -----------------------------------------------
 
