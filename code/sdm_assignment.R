@@ -37,5 +37,5 @@ ggplot() +
                   ymax = conf.high),
               fill = "grey",
               alpha = 0.2) +  
-  labs(x = "Air temperature", y = "Probability of Occurance") + 
+  labs(x = "Air temperature in °C", y = "Probability of Occurance") + 
   theme_bw()
